@@ -15,7 +15,7 @@ It is already possible to display Google Maps in Leaflet, but unfortunately the 
 * [MapGear's implementation with OpenLayers](https://github.com/mapgears/ol3-google-maps) uses a different technique (decorate OL3 with GMaps methods), but has a different set of [limitations](https://github.com/mapgears/ol3-google-maps/blob/master/LIMITATIONS.md).
 * [Avin Mathew's implementation](https://avinmathew.com/leaflet-and-google-maps/) uses a clever timer-based technique, but it requires jQuery and still feels jittery due to the timers.
 
-In order to provide the best Leaflet experience, GoogleMutant uses both [DOM mutation observers](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and `L.GridLayer` from Leaflet 1.0.0. The basemap tiles are still requested *through* Google's javascript code, but they switch places to use Leaflet drag and zoom.
+In order to provide the best Leaflet experience, GoogleMutant uses both [DOM mutation observers](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and `L.GridLayer` from Leaflet 1.0.0. The basemap tiles are still requested *through* the Google maps JavaScript API, but they switch places to use Leaflet drag and zoom.
 
 ## Compatibility
 
@@ -29,6 +29,12 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+```
+
+Include the GoogleMutant javascript file (alternatively, fetch a local copy with `npm install leaflet.gridlayer.googlemutant`):
+
+```
+<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@0.1.0/Leaflet.GoogleMutant.js'></script>
 ```
 
 Then, you can create an instance of `L.GridLayer.GoogleMutant` on your JS code:

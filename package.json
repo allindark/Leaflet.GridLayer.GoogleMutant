@@ -1,0 +1,16 @@
+{
+  "name": "leaflet.gridlayer.googlemutant",
+  "version": "0.1.0",
+  "description": "A plugin for LeafletJS to use Google maps basemaps.",
+  "main": "Leaflet.GridLayer.FadeOut.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant.git"
+  },
+  "keywords": [
+    "leaflet",
+    "google maps"
+  ],
+  "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
+  "license": "Beerware"
+}
