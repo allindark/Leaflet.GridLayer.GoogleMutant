@@ -3,17 +3,23 @@
 
 A [LeafletJS](http://www.leafletjs.com) plugin to use Google maps basemaps.
 
-Altough this is possible already thanks to [Shramov's implementation](https://github.com/shramov/leaflet-plugins), or using an [OpenLayers implementation](http://openlayers.org/en/v3.0.0/examples/google-map.html), the current state of the art suffers from a [big drawback](https://github.com/shramov/leaflet-plugins/issues/111): the basemap and whatever overlays are on top are *off sync*.
-
-GoogleMutant uses both [DOM mutation observers](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and `L.GridLayer` from Leaflet 1.0.0 to provide a seamless experience. The basemap tiles are still requested *through* Google's javascript code, but they switch places to use Leaflet animations.
-
-Hat tip to [Avin Mathew](https://avinmathew.com/leaflet-and-google-maps/) for inspiration.
-
-
 ## Demo
 
 [http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html](http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html)
 
+## Why?
+
+It is already possible to display Google Maps in Leaflet, but unfortunately the state of the art is far from perfect:
+
+* [Shramov's Leaflet plugin implementation](https://github.com/shramov/leaflet-plugins) (as well as an old, not recommended [OpenLayers technique](http://openlayers.org/en/v3.0.0/examples/google-map.html)) suffer from a [big drawback](https://github.com/shramov/leaflet-plugins/issues/111): the basemap and whatever overlays are on top are *off sync*. This is very noticeable when dragging or zooming.
+* [MapGear's implementation with OpenLayers](https://github.com/mapgears/ol3-google-maps) uses a different technique (decorate OL3 with GMaps methods), but has a different set of [limitations](https://github.com/mapgears/ol3-google-maps/blob/master/LIMITATIONS.md).
+* [Avin Mathew's implementation](https://avinmathew.com/leaflet-and-google-maps/) uses a clever timer-based technique, but it requires jQuery and still feels jittery due to the timers.
+
+In order to provide the best Leaflet experience, GoogleMutant uses both [DOM mutation observers](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and `L.GridLayer` from Leaflet 1.0.0. The basemap tiles are still requested *through* Google's javascript code, but they switch places to use Leaflet drag and zoom.
+
+## Compatibility
+
+This plugin doesn't work on IE10 or lower, as [that browser doesn't implement DOM mutation observers](http://caniuse.com/#search=mutation). Chrome, Firefox, Safari, IE11 and Edge are fine.
 
 ## Usage
 
