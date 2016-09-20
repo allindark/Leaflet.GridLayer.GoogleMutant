@@ -1,6 +1,6 @@
 {
   "name": "leaflet.gridlayer.googlemutant",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A plugin for LeafletJS to use Google maps basemaps.",
   "main": "Leaflet.GridLayer.FadeOut.js",
   "repository": {

@@ -173,10 +173,15 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 	// Only images which 'src' attrib match this will be considered for moving around.
 	// Looks like some kind of string-based protobuf, maybe??
+	// Only the roads (and terrain, and vector-based stuff) match this pattern
 	_roadRegexp: /!1i(\d+)!2i(\d+)!3i(\d+)!/,
 
-	// https://khms0.googleapis.com/kh?v=701&hl=en-US&&x=0&y=0&z=1
+	// On the other hand, raster imagery matches this other pattern
 	_satRegexp: /x=(\d+)&y=(\d+)&z=(\d+)/,
+
+	// On small viewports, when zooming in/out, a static image is requested
+	// This will not be moved around, just removed from the DOM.
+	_staticRegExp: /StaticMapService\.GetMapImage/,
 
 	_onMutatedImage: function _onMutatedImage(imgNode) {
 // 		if (imgNode.src) {
@@ -211,15 +216,25 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 // console.log('Caching for later', key);
-				if (imgNode.parentNode) {
-					imgNode.parentNode.removeChild = L.Util.falseFn;
-					imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
+				var parent = imgNode.parentNode;
+				if (parent) {
+					parent.removeChild(imgNode);
+					parent.removeChild = L.Util.falseFn;
+// 					imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
 				}
 				if (key in this._freshTiles) {
 					this._freshTiles[key].push(imgNode);
 				} else {
 					this._freshTiles[key] = [imgNode];
 				}
+			}
+		} else if (imgNode.src.match(this._staticRegExp)) {
+			var parent = imgNode.parentNode;
+			if (parent) {
+				// Remove the image, but don't store it anywhere.
+				// Image needs to be replaced instead of removed, as the container
+				// seems to be reused.
+				imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
 			}
 		}
 	},
@@ -238,9 +253,11 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			this._tileCallbacks[key] = this._tileCallbacks[key] || [];
 			this._tileCallbacks[key].push( (function (c, k) {
 				return function(imgNode) {
-					if (imgNode.parentNode) {
-						imgNode.parentNode.removeChild = L.Util.falseFn;
-						imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
+					var parent = imgNode.parentNode;
+					if (parent) {
+						parent.removeChild(imgNode);
+						parent.removeChild = L.Util.falseFn;
+// 						imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
 					}
 					c.appendChild(imgNode);
 					done();
