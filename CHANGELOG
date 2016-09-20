@@ -1,0 +1,7 @@
+# v0.2.0
+
+* Images from the static maps API (which only appear on small viewports) are now removed and thus do not obscure map controls.
+
+# v0.1.0
+
+* Initial release
