@@ -11,8 +11,8 @@
 <!--	<link rel="stylesheet" href="../Leaflet/dist/leaflet.css" />
 	<script type="text/javascript" src="../Leaflet/dist/leaflet-src.js"></script>-->
 
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet-src.js"></script>
 
 	<script type="text/javascript" src="Leaflet.GoogleMutant.js"></script>
 	<style>
@@ -56,10 +56,16 @@
 			type:'terrain'
 		});
 
+		var hybridMutant = L.gridLayer.googleMutant({
+			maxZoom: 24,
+			type:'hybrid'
+		});
+
 		L.control.layers({
 			Roadmap: roadMutant,
 			Aerial: satMutant,
-			Terrain: terrainMutant
+			Terrain: terrainMutant,
+			Hybrid: hybridMutant
 		}, {}, {
 			collapsed: false
 		}).addTo(map);
