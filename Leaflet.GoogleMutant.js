@@ -321,4 +321,4 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 // Returns a new `GridLayer.GoogleMutant` given its options
 L.gridLayer.googleMutant = function(options) {
 	return new L.GridLayer.GoogleMutant(options);
-}
+};
