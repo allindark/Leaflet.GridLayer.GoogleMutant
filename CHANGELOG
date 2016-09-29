@@ -1,3 +1,12 @@
+
+# v0.3.0
+
+* Implemented 'hybrid' mode, though there are tile pruning artifacts
+
+# v0.2.1
+
+* Fix entry point in package.json
+
 # v0.2.0
 
 * Images from the static maps API (which only appear on small viewports) are now removed and thus do not obscure map controls.
