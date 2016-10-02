@@ -306,7 +306,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 						}
 						c.appendChild(imgNode);
 						c.dataset.pending--;
-						if (!c.dataset.pending) { done(); }
+						if (!parseInt(c.dataset.pending)) { done(); }
 // 						console.log('Sent ', k2, ' to _tileCallbacks, still ', c.dataset.pending, ' images to go');
 					}.bind(this)
 				}.bind(this))(tileContainer, key2) );
