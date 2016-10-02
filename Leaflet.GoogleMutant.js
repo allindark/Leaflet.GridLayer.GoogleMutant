@@ -50,7 +50,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		// Couple data structures indexed by tile key
 		this._tileCallbacks = {};	// Callbacks for promises for tiles that are expected
 		this._freshTiles = {};	// Tiles from the mutant which haven't been requested yet
-		this._pendingImageCount = {};	// Counter of how many images are still not loaded on a multi-image tile
 
 		this._imagesPerTile = (this.options.type === 'hybrid') ? 2 : 1;
 		this.createTile = (this.options.type === 'hybrid') ? this._createMultiTile : this._createSingleTile;
@@ -313,7 +312,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			}
 		}
 
-		if (!this._pendingImageCount[key]) {
+		if (!parseInt(tileContainer.dataset.pending)) {
 			L.Util.requestAnimFrame(done);
 		}
 		return tileContainer;
