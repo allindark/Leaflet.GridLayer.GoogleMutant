@@ -1,4 +1,9 @@
 
+# v0.3.1
+
+* Minor bugfixes by @tomhughes
+
+
 # v0.3.0
 
 * Implemented 'hybrid' mode, though there are tile pruning artifacts
