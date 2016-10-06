@@ -56,10 +56,26 @@
 			type:'terrain'
 		});
 
+		var styleMutant = L.gridLayer.googleMutant({
+			styles: [
+                {elementType: 'labels', stylers: [{visibility: 'off'}]},
+                {featureType: 'water', stylers: [{color: '#444444'}]},
+                {featureType: 'landscape', stylers: [{color: '#eeeeee'}]},
+                {featureType: 'road', stylers: [{visibility: 'off'}]},
+                {featureType: 'poi', stylers: [{visibility: 'off'}]},
+                {featureType: 'transit', stylers: [{visibility: 'off'}]},
+                {featureType: 'administrative', stylers: [{visibility: 'off'}]},
+                {featureType: 'administrative.locality', stylers: [{visibility: 'off'}]}
+            ],
+			maxZoom: 24,
+			type:'roadmap'
+		});
+
 		L.control.layers({
 			Roadmap: roadMutant,
 			Aerial: satMutant,
-			Terrain: terrainMutant
+			Terrain: terrainMutant,
+			Styles: styleMutant
 		}, {}, {
 			collapsed: false
 		}).addTo(map);
