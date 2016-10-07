@@ -3,12 +3,12 @@
 <head>
 	<title>Leaflet debug page</title>
 
-<!-- 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script> -->
+<!--  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script> -->
 	<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!--	<link rel="stylesheet" href="../Leaflet/dist/leaflet.css" />
+<!--  <link rel="stylesheet" href="../Leaflet/dist/leaflet.css" />
 	<script type="text/javascript" src="../Leaflet/dist/leaflet-src.js"></script>-->
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
@@ -17,9 +17,9 @@
 	<script type="text/javascript" src="Leaflet.GoogleMutant.js"></script>
 	<style>
 	#map {
-/* 		margin: 32px; */
-/* 		width: auto; */
-/* 		overflow: visible; */
+/*    margin: 32px; */
+/*    width: auto; */
+/*    overflow: visible; */
 		width: calc( 100vw - 64px );
 		height: calc( 100vh - 64px );
 	}
@@ -36,7 +36,7 @@
 	<script type="text/javascript">
 
 		var mapopts =  {
-// 			zoomSnap: 0.1
+//      zoomSnap: 0.1
 		};
 
 		var map = L.map('map', mapopts).setView([0,0],0);
@@ -61,11 +61,27 @@
 			type:'hybrid'
 		});
 
+		var styleMutant = L.gridLayer.googleMutant({
+			styles: [
+				{elementType: 'labels', stylers: [{visibility: 'off'}]},
+				{featureType: 'water', stylers: [{color: '#444444'}]},
+				{featureType: 'landscape', stylers: [{color: '#eeeeee'}]},
+				{featureType: 'road', stylers: [{visibility: 'off'}]},
+				{featureType: 'poi', stylers: [{visibility: 'off'}]},
+				{featureType: 'transit', stylers: [{visibility: 'off'}]},
+				{featureType: 'administrative', stylers: [{visibility: 'off'}]},
+				{featureType: 'administrative.locality', stylers: [{visibility: 'off'}]}
+			],
+			maxZoom: 24,
+			type:'roadmap'
+		});
+
 		L.control.layers({
 			Roadmap: roadMutant,
 			Aerial: satMutant,
 			Terrain: terrainMutant,
-			Hybrid: hybridMutant
+			Hybrid: hybridMutant,
+			Styles: styleMutant
 		}, {}, {
 			collapsed: false
 		}).addTo(map);
@@ -88,14 +104,14 @@
 
 		var rectangle = L.rectangle(madBounds).addTo(map);
 
-// 		map.addLayer(osm);
-// 		map.addLayer(kittens);
-// 		map.addLayer(debug);
+//    map.addLayer(osm);
+//    map.addLayer(kittens);
+//    map.addLayer(debug);
 
 		var grid = L.gridLayer({
 			attribution: 'Grid Layer',
-// 			tileSize: L.point(150, 80),
-// 			tileSize: tileSize
+//      tileSize: L.point(150, 80),
+//      tileSize: tileSize
 		});
 
 		grid.createTile = function (coords) {

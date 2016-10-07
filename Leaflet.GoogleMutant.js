@@ -1,4 +1,3 @@
-
 // Based on https://github.com/shramov/leaflet-plugins
 // GridLayer like https://avinmathew.com/leaflet-and-google-maps/ , but using MutationObserver instead of jQuery
 
@@ -138,7 +137,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			disableDoubleClickZoom: true,
 			scrollwheel: false,
 			streetViewControl: false,
-// 			styles: this.options.mapOptions.styles,
+			styles: this.options.styles || {},
 			backgroundColor: 'transparent'
 		});
 
