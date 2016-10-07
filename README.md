@@ -1,4 +1,3 @@
-
 # Leaflet.GridLayer.GoogleMutant
 
 A [LeafletJS](http://www.leafletjs.com) plugin to use Google maps basemaps.
@@ -27,23 +26,28 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 
 ```
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
 ```
 
 Include the GoogleMutant javascript file (alternatively, fetch a local copy with `npm install leaflet.gridlayer.googlemutant`):
 
 ```
-<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@0.2.0/Leaflet.GoogleMutant.js'></script>
+<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@0.3.1/Leaflet.GoogleMutant.js'></script>
 ```
 
 Then, you can create an instance of `L.GridLayer.GoogleMutant` on your JS code:
 
 ```
 var roads = L.gridLayer.googleMutant({
-	type: 'roadmap'	// valid values are 'roadmap', 'satellite', 'terrain'
+	type: 'roadmap'	// valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
 }).addTo(map);
 ```
+
+
+## Known caveats
+
+`hybrid` mode prunes tiles before needed for no apparent reason, so the map flickers when there is a zoom change.
 
 
 ## Legalese

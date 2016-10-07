@@ -50,6 +50,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._tileCallbacks = {};	// Callbacks for promises for tiles that are expected
 		this._freshTiles = {};	// Tiles from the mutant which haven't been requested yet
 
+		this._imagesPerTile = (this.options.type === 'hybrid') ? 2 : 1;
+		this.createTile = (this.options.type === 'hybrid') ? this._createMultiTile : this._createSingleTile;
 	},
 
 	onAdd: function (map) {
@@ -189,6 +191,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		var coords;
 		var match = imgNode.src.match(this._roadRegexp);
+		var sublayer;
 
 		if (match) {
 			coords = {
@@ -196,6 +199,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				x: match[2],
 				y: match[3]
 			}
+			if (this._imagesPerTile > 1) { imgNode.style.zIndex = 1; }
+			sublayer = 1;
 		} else {
 			match = imgNode.src.match(this._satRegexp);
 			if (match) {
@@ -205,10 +210,13 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					z: match[3]
 				}
 			}
+// 			imgNode.style.zIndex = 0;
+			sublayer = 0;
 		}
 
 		if (coords) {
-			var key = this._tileCoordsToKey(coords);
+			var key = this._tileCoordsToKey(coords)
+			if (this._imagesPerTile > 1) { key += '/' + sublayer; }
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
 				this._tileCallbacks[key].pop()(imgNode);
@@ -238,14 +246,16 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		}
 	},
 
-	createTile: function createTile(coords, done) {
+	// This will be used as this.createTile for 'roadmap', 'sat', 'terrain'
+	_createSingleTile: function createTile(coords, done) {
 		var key = this._tileCoordsToKey(coords);
 // console.log('Need:', key);
+
 		if (key in this._freshTiles) {
 			var tile = this._freshTiles[key].pop();
 			if (!this._freshTiles[key].length) { delete this._freshTiles[key]; }
 			L.Util.requestAnimFrame(done);
-// console.log('Got ', key, ' from _freshTiles');
+// 			console.log('Got ', key, ' from _freshTiles');
 			return tile;
 		} else {
 			var tileContainer = L.DomUtil.create('div');
@@ -260,12 +270,51 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					}
 					c.appendChild(imgNode);
 					done();
-// console.log('Sent ', key, ' to _tileCallbacks');
+// 					console.log('Sent ', key, ' to _tileCallbacks');
 				}.bind(this)
 			}.bind(this))(tileContainer, key) );
 
 			return tileContainer;
 		}
+	},
+
+	// This will be used as this.createTile for 'hybrid'
+	_createMultiTile: function createTile(coords, done) {
+		var key = this._tileCoordsToKey(coords);
+
+		var tileContainer = L.DomUtil.create('div');
+		tileContainer.dataset.pending = this._imagesPerTile;
+
+		for (var i = 0; i < this._imagesPerTile; i++) {
+			var key2 = key + '/' + i;
+			if (key2 in this._freshTiles) {
+				tileContainer.appendChild(this._freshTiles[key2].pop());
+				if (!this._freshTiles[key2].length) { delete this._freshTiles[key2]; }
+				tileContainer.dataset.pending--;
+// 				console.log('Got ', key2, ' from _freshTiles');
+			} else {
+				this._tileCallbacks[key2] = this._tileCallbacks[key2] || [];
+				this._tileCallbacks[key2].push( (function (c, k2) {
+					return function(imgNode) {
+						var parent = imgNode.parentNode;
+						if (parent) {
+							parent.removeChild(imgNode);
+							parent.removeChild = L.Util.falseFn;
+// 							imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
+						}
+						c.appendChild(imgNode);
+						c.dataset.pending--;
+						if (!parseInt(c.dataset.pending)) { done(); }
+// 						console.log('Sent ', k2, ' to _tileCallbacks, still ', c.dataset.pending, ' images to go');
+					}.bind(this)
+				}.bind(this))(tileContainer, key2) );
+			}
+		}
+
+		if (!parseInt(tileContainer.dataset.pending)) {
+			L.Util.requestAnimFrame(done);
+		}
+		return tileContainer;
 	},
 
 	_checkZoomLevels: function () {
@@ -320,4 +369,4 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 // Returns a new `GridLayer.GoogleMutant` given its options
 L.gridLayer.googleMutant = function(options) {
 	return new L.GridLayer.GoogleMutant(options);
-}
+};
