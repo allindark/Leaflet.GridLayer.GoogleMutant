@@ -44,6 +44,19 @@ var roads = L.gridLayer.googleMutant({
 }).addTo(map);
 ```
 
+It's also possible to use [custom styling](https://developers.google.com/maps/documentation/javascript/styling)
+by passing a value to the `style` option, e.g.:
+
+```
+var styled = L.gridLayer.googleMutant({
+	type: 'roadmap',
+	styles: [
+		{elementType: 'labels', stylers: [{visibility: 'off'}]},
+		{featureType: 'water', stylers: [{color: '#444444'}]}
+	]
+}).addTo(map);
+```
+
 
 ## Known caveats
 
