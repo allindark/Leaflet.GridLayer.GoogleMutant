@@ -26,8 +26,8 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 
 ```
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 ```
 
 Include the GoogleMutant javascript file (alternatively, fetch a local copy with `npm install leaflet.gridlayer.googlemutant`):
