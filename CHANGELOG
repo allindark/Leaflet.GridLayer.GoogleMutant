@@ -1,3 +1,6 @@
+# v0.4.1
+
+* Fixed a race condition involving spurious tile caching (thanks @tyllo)
 
 # v0.4.0
 
