@@ -361,6 +361,27 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		this._mutant.setCenter(_center);
 		this._mutant.setZoom(Math.round(this._map.getZoom()));
+	},
+
+	// Agressively prune _freshtiles when a tile with the same key is removed,
+	// this prevents a problem where Leaflet keeps a loaded tile longer than
+	// GMaps, so that GMaps makes two requests but Leaflet only consumes one,
+	// polluting _freshTiles with stale data.
+	_removeTile: function(key) {
+		if (this._imagesPerTile > 1) {
+			for (var i=0; i<this._imagesPerTile; i++) {
+				var key2 = key + '/' + sublayer;
+				if (key2 in this._freshTiles) { delete this._freshTiles[key2]; }
+// 				console.log('Pruned spurious hybrid _freshTiles');
+			}
+		} else {
+			if (key in this._freshTiles) {
+				delete this._freshTiles[key];
+// 				console.log('Pruned spurious _freshTiles', key);
+			}
+		}
+
+		return L.GridLayer.prototype._removeTile.call(this, key);
 	}
 });
 
