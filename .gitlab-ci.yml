@@ -1,4 +1,8 @@
-# This file is a template, and might need editing before it works on your project.
+
+
+image: node:latest
+
+# Template from "plain HTML pages"
 # Full project: https://gitlab.com/pages/plain-html
 pages:
   stage: deploy
@@ -11,3 +15,14 @@ pages:
     - public
   only:
   - master
+
+lint:
+  stage: test
+  script:
+   - npm install
+   - npm run-script lint
+
+
+cache:
+  paths:
+  - node_modules/
