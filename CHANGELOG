@@ -1,3 +1,8 @@
+# v0.4.2
+
+* Fixed typos in variable references
+* Added linting
+
 # v0.4.1
 
 * Fixed a race condition involving spurious tile caching (thanks @tyllo)
