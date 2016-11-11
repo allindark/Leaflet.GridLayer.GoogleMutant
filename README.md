@@ -30,7 +30,7 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
 ```
 
-Include the GoogleMutant javascript file (alternatively, fetch a local copy with `npm install --save leaflet.gridlayer.googlemutant` or `yarn add leaflet.gridlayer.googlemutant`):
+Include the GoogleMutant javascript file:
 
 ```
 <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
@@ -57,6 +57,15 @@ var styled = L.gridLayer.googleMutant({
 }).addTo(map);
 ```
 
+## Installing a local copy
+
+If you don't want to rely on a CDN to load GoogleMutant, you can:
+
+* Fetch it with [NPM](https://www.npmjs.com/) by running `npm install --save leaflet.gridlayer.googlemutant`.
+* Fetch it with [Yarn](https://yarnpkg.com/) by running `yarn add leaflet.gridlayer.googlemutant`.
+* We discourage using [Bower](https://bower.io/) but, if you must, `bower install https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant.git`.
+
+You can also download a static copy from the CDN, or clone this git repo.
 
 ## Known caveats
 
