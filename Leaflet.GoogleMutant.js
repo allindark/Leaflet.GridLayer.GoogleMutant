@@ -339,7 +339,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._mutant.setCenter(_center);
 		var zoom = this._map.getZoom();
 		if (zoom !== undefined) {
-			this._mutant.setZoom(Math.round(this._map.getZoom()));
+			zoom = Math.min(zoom, this.options.maxNativeZoom);
+			this._mutant.setZoom(zoom);
 		}
 	},
 
