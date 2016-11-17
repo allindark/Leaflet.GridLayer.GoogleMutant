@@ -214,6 +214,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		if (coords) {
 			var key = this._tileCoordsToKey(coords);
+			imgNode.style.position = 'absolute';
 			if (this._imagesPerTile > 1) { key += '/' + sublayer; }
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
