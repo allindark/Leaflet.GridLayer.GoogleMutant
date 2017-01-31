@@ -1,4 +1,8 @@
 
+# v0.4.4
+
+* Changed README to show how to polyfill promises for IE11 (by @dullroar).
+
 # v0.4.3
 
 * Fixed displacement of label tiles in hybrid mode

@@ -71,6 +71,15 @@ You can also download a static copy from the CDN, or clone this git repo.
 
 `hybrid` mode prunes tiles before needed for no apparent reason, so the map flickers when there is a zoom change.
 
+If you are targeting IE11, then include the following **before** the `script` element that references
+the GoogleMutant javascript file:
+
+```
+<script src="https://unpkg.com/es6-promise@4.0.5/dist/es6-promise.min.js"></script>
+<script>ES6Promise.polyfill();</script>
+```
+
+This will polyfill in Javascript Promises for IE.
 
 ## Legalese
 
