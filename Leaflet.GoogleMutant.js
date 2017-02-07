@@ -141,9 +141,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		this._mutant = map;
 
-		google.maps.event.addListenerOnce(map, 'idle', function(){
+		google.maps.event.addListenerOnce(map, 'idle', function () {
 			this._mutantContainer.querySelectorAll('a').forEach(
-				function(node){
+				function (node) {
 					node.style.pointerEvents = 'auto';
 				}
 			);
