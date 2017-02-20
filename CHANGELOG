@@ -2,6 +2,7 @@
 # v0.4.4
 
 * Changed README to show how to polyfill promises for IE11 (by @dullroar).
+* Fixed a race condition on `_freshTiles` handling (by @luiscamacho).
 
 # v0.4.3
 
