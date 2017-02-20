@@ -249,15 +249,15 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	_createSingleTile: function createTile (coords, done) {
 		var key = this._tileCoordsToKey(coords);
 // console.log('Need:', key);
+		var tileContainer = L.DomUtil.create('div');
 
 		if (key in this._freshTiles) {
 			var tile = this._freshTiles[key].pop();
 			if (!this._freshTiles[key].length) { delete this._freshTiles[key]; }
+			tileContainer.appendChild(tile);
 			L.Util.requestAnimFrame(done);
 // 			console.log('Got ', key, ' from _freshTiles');
-			return tile;
 		} else {
-			var tileContainer = L.DomUtil.create('div');
 			this._tileCallbacks[key] = this._tileCallbacks[key] || [];
 			this._tileCallbacks[key].push( (function (c/*, k*/) {
 				return function (imgNode) {
@@ -272,9 +272,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 // 					console.log('Sent ', k, ' to _tileCallbacks');
 				}.bind(this);
 			}.bind(this))(tileContainer/*, key*/) );
-
-			return tileContainer;
 		}
+
+		return tileContainer;
 	},
 
 	// This will be used as this.createTile for 'hybrid'
