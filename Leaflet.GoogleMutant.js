@@ -69,6 +69,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 			//20px instead of 1em to avoid a slight overlap with google's attribution
 			map._controlCorners.bottomright.style.marginBottom = '20px';
+			map._controlCorners.bottomleft.style.marginBottom = '20px';
 
 			this._reset();
 			this._update();
@@ -86,6 +87,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		map.off('resize', this._resize, this);
 
 		map._controlCorners.bottomright.style.marginBottom = '0em';
+		map._controlCorners.bottomleft.style.marginBottom = '0em';
 	},
 
 	getAttribution: function () {
