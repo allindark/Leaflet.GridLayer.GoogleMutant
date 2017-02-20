@@ -250,6 +250,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		var key = this._tileCoordsToKey(coords);
 // console.log('Need:', key);
 		var tileContainer = L.DomUtil.create('div');
+		done = done.bind(this, null, tileContainer);
 
 		if (key in this._freshTiles) {
 			var tile = this._freshTiles[key].pop();
@@ -283,6 +284,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		var tileContainer = L.DomUtil.create('div');
 		tileContainer.dataset.pending = this._imagesPerTile;
+		done = done.bind(this, null, tileContainer);
 
 		for (var i = 0; i < this._imagesPerTile; i++) {
 			var key2 = key + '/' + i;
