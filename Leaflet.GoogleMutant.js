@@ -220,7 +220,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			if (this._imagesPerTile > 1) { key += '/' + sublayer; }
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
-				this._tileCallbacks[key].pop()(imgNode);
+				this._tileCallbacks[key].shift()(imgNode);
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 // console.log('Caching for later', key);
