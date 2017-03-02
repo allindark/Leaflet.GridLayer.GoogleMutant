@@ -1,4 +1,10 @@
 
+# v0.4.5
+
+* Shift controls in the lower left corner (in addition to those in the lower right) (by @luiscamacho).
+* Resolve tiles in the same order they are mutated in, fixes race conditions at zooms 0-1 (by @TolonUK).
+* Explicitly set z-index of mutant to avoid event propagation problems on iOS (by @robertharm).
+
 # v0.4.4
 
 * Changed README to show how to polyfill promises for IE11 (by @dullroar).
