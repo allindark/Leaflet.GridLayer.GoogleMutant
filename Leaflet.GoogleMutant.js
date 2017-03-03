@@ -67,6 +67,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			map.on('zoomend', this._handleZoomAnim, this);
 			map.on('resize', this._resize, this);
 
+			//handle layer being added to a map for which there are no Google tiles at the given zoom
+			google.maps.event.addListenerOnce(this._mutant, 'idle', this._checkZoomLevels.bind(this, true));
+
 			//20px instead of 1em to avoid a slight overlap with google's attribution
 			map._controlCorners.bottomright.style.marginBottom = '20px';
 			map._controlCorners.bottomleft.style.marginBottom = '20px';
@@ -331,10 +334,22 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	_checkZoomLevels: function () {
 		//setting the zoom level on the Google map may result in a different zoom level than the one requested
 		//(it won't go beyond the level for which they have data).
-		// verify and make sure the zoom levels on both Leaflet and Google maps are consistent
-		if ((this._map.getZoom() !== undefined) && (this._mutant.getZoom() !== this._map.getZoom())) {
-			//zoom levels are out of sync. Set the leaflet zoom level to match the google one
-			this._map.setZoom(this._mutant.getZoom());
+		var zoomLevel = this._map.getZoom();
+		var gMapZoomLevel = this._mutant.getZoom();
+		if (!zoomLevel || !gMapZoomLevel) return;
+
+
+		if ((gMapZoomLevel !== zoomLevel) || //zoom levels are out of sync, Google doesn't have data
+			(gMapZoomLevel > this.options.maxNativeZoom)) { //at current location, Google does have data (contrary to maxNativeZoom)
+			//Update maxNativeZoom
+			this._setMaxNativeZoom(gMapZoomLevel);
+		}
+	},
+
+	_setMaxNativeZoom: function (zoomLevel) {
+		if (zoomLevel != this.options.maxNativeZoom) {
+			this.options.maxNativeZoom = zoomLevel;
+			this._resetView();
 		}
 	},
 
@@ -343,17 +358,21 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	},
 
 	_update: function () {
-		L.GridLayer.prototype._update.call(this);
-		if (!this._mutant) return;
+		// zoom level check needs to happen before super's implementation (tile addition/creation)
+		// otherwise tiles may be missed if maxNativeZoom is not yet correctly determined
+		if (this._mutant) {
+			var center = this._map.getCenter();
+			var _center = new google.maps.LatLng(center.lat, center.lng);
 
-		var center = this._map.getCenter();
-		var _center = new google.maps.LatLng(center.lat, center.lng);
-
-		this._mutant.setCenter(_center);
-		var zoom = this._map.getZoom();
-		if (zoom !== undefined) {
-			this._mutant.setZoom(Math.round(this._map.getZoom()));
+			this._mutant.setCenter(_center);
+			var zoom = this._map.getZoom();
+			if (zoom !== undefined) {
+				this._mutant.setZoom(Math.round(this._map.getZoom()));
+				this._checkZoomLevels();			
+			}
 		}
+
+		L.GridLayer.prototype._update.call(this);
 	},
 
 	_resize: function () {
@@ -391,6 +410,32 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 // 				console.log('Pruned spurious _freshTiles', key);
 			}
 		}
+
+		//if the tile is still visible in the google map, keep it.
+		//In this situation, if the tile is later required, there won't be a mutation event (since tile is already in gMap) 
+		//and there will be no other way to refetch the tile.
+		//this situation where GMaps keeps a tile longer than Leaflet can happen when the map goes past 
+		//self's maxNativeZoom
+		var gZoom = this._mutant.getZoom();
+		var zoom = key.split(':')[2];
+		if (zoom == gZoom && gZoom == this.options.maxNativeZoom) {
+			var imgs = this._tiles[key].el.querySelectorAll('img');
+			if (imgs.length) {
+				if (this._imagesPerTile > 1) {
+					for (var j=0; j<this._imagesPerTile;j++) {
+						var keyJ = key + '/' + j;
+						var imgNode = imgs[j];
+						if (keyJ in this._freshTiles) {
+							this._freshTiles[keyJ].push(imgNode);
+						} else {
+							this._freshTiles[keyJ] = [imgNode];
+						}				}
+				} else {
+					this._freshTiles[key] = [imgs[0]];
+				}
+			}
+		}
+
 
 		return L.GridLayer.prototype._removeTile.call(this, key);
 	}
