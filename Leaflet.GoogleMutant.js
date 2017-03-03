@@ -324,16 +324,22 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	_checkZoomLevels: function () {
 		//setting the zoom level on the Google map may result in a different zoom level than the one requested
 		//(it won't go beyond the level for which they have data).
-		// verify and make sure the zoom levels on both Leaflet and Google maps are consistent
 		var zoomLevel = this._map.getZoom();
 		var gMapZoomLevel = this._mutant.getZoom();
-		if (zoomLevel && gMapZoomLevel && (gMapZoomLevel !== zoomLevel)) {
-			//zoom levels are out of sync. Ensure maxNativeZoom matches google map's zoom level
-			//and reset view
-			if (this.options.maxNativeZoom != gMapZoomLevel) {
-				this.options.maxNativeZoom = gMapZoomLevel;
-				this._resetView();
-			}
+		if (!zoomLevel || !gMapZoomLevel) return;
+
+
+		if ((gMapZoomLevel !== zoomLevel) || //zoom levels are out of sync, Google doesn't have data
+			(gMapZoomLevel > this.options.maxNativeZoom)) { //at current location, Google does have data (contrary to maxNativeZoom)
+			//Update maxNativeZoom
+			this._setMaxNativeZoom(gMapZoomLevel);
+		}
+	},
+
+	_setMaxNativeZoom: function (zoomLevel) {
+		if (zoomLevel != this.options.maxNativeZoom) {
+			this.options.maxNativeZoom = zoomLevel;
+			this._resetView();
 		}
 	},
 
