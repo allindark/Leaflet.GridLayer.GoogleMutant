@@ -49,7 +49,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._freshTiles = {};	// Tiles from the mutant which haven't been requested yet
 
 		this._imagesPerTile = (this.options.type === 'hybrid') ? 2 : 1;
-		this.createTile = (this.options.type === 'hybrid') ? this._createMultiTile : this._createSingleTile;
 	},
 
 	onAdd: function (map) {
@@ -202,7 +201,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 		var coords;
 		var match = imgNode.src.match(this._roadRegexp);
-		var sublayer, parent;
+		var sublayer = 0;
+		var parent;
 
 		if (match) {
 			coords = {
@@ -210,8 +210,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				x: match[2],
 				y: match[3]
 			};
-			if (this._imagesPerTile > 1) { imgNode.style.zIndex = 1; }
-			sublayer = 1;
+			if (this._imagesPerTile > 1) { 
+				imgNode.style.zIndex = 1;
+				sublayer = 1;
+			}
 		} else {
 			match = imgNode.src.match(this._satRegexp);
 			if (match) {
@@ -226,9 +228,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		}
 
 		if (coords) {
-			var key = this._tileCoordsToKey(coords);
+			var tileKey = this._tileCoordsToKey(coords);
 			imgNode.style.position = 'absolute';
-			if (this._imagesPerTile > 1) { key += '/' + sublayer; }
+			key = tileKey + '/' + sublayer;
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
 				this._tileCallbacks[key].shift()(imgNode);
@@ -236,11 +238,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			} else {
 // console.log('Caching for later', key);
 				parent = imgNode.parentNode;
-				if (parent) {
-					parent.removeChild(imgNode);
-					parent.removeChild = L.Util.falseFn;
-// 					imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
-				}
+				parent.removeChild(imgNode);
+				parent.removeChild = L.Util.falseFn;
 				if (key in this._freshTiles) {
 					this._freshTiles[key].push(imgNode);
 				} else {
@@ -249,50 +248,15 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			}
 		} else if (imgNode.src.match(this._staticRegExp)) {
 			parent = imgNode.parentNode;
-			if (parent) {
-				// Remove the image, but don't store it anywhere.
-				// Image needs to be replaced instead of removed, as the container
-				// seems to be reused.
-				imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
-			}
+			// Remove the image, but don't store it anywhere.
+			// Image needs to be replaced instead of removed, as the container
+			// seems to be reused.
+			imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
 		}
 	},
 
-	// This will be used as this.createTile for 'roadmap', 'sat', 'terrain'
-	_createSingleTile: function createTile (coords, done) {
-		var key = this._tileCoordsToKey(coords);
-// console.log('Need:', key);
-		var tileContainer = L.DomUtil.create('div');
-		done = done.bind(this, null, tileContainer);
 
-		if (key in this._freshTiles) {
-			var tile = this._freshTiles[key].pop();
-			if (!this._freshTiles[key].length) { delete this._freshTiles[key]; }
-			tileContainer.appendChild(tile);
-			L.Util.requestAnimFrame(done);
-// 			console.log('Got ', key, ' from _freshTiles');
-		} else {
-			this._tileCallbacks[key] = this._tileCallbacks[key] || [];
-			this._tileCallbacks[key].push( (function (c/*, k*/) {
-				return function (imgNode) {
-					var parent = imgNode.parentNode;
-					if (parent) {
-						parent.removeChild(imgNode);
-						parent.removeChild = L.Util.falseFn;
-// 						imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
-					}
-					c.appendChild(imgNode);
-					done();
-// 					console.log('Sent ', k, ' to _tileCallbacks');
-				}.bind(this);
-			}.bind(this))(tileContainer/*, key*/) );
-		}
-
-		return tileContainer;
-	},
-
-	// This will be used as this.createTile for 'hybrid'
-	_createMultiTile: function createTile (coords, done) {
+	createTile: function (coords, done) {
 		var key = this._tileCoordsToKey(coords);
 
 		var tileContainer = L.DomUtil.create('div');
@@ -311,11 +275,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				this._tileCallbacks[key2].push( (function (c/*, k2*/) {
 					return function (imgNode) {
 						var parent = imgNode.parentNode;
-						if (parent) {
-							parent.removeChild(imgNode);
-							parent.removeChild = L.Util.falseFn;
-// 							imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
-						}
+						parent.removeChild(imgNode);
+						parent.removeChild = L.Util.falseFn;
+
 						c.appendChild(imgNode);
 						c.dataset.pending--;
 						if (!parseInt(c.dataset.pending)) { done(); }
@@ -398,17 +360,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	// GMaps, so that GMaps makes two requests but Leaflet only consumes one,
 	// polluting _freshTiles with stale data.
 	_removeTile: function (key) {
-		if (this._imagesPerTile > 1) {
-			for (var i=0; i<this._imagesPerTile; i++) {
-				var key2 = key + '/' + i;
-				if (key2 in this._freshTiles) { delete this._freshTiles[key2]; }
+		for (var i=0; i<this._imagesPerTile; i++) {
+			var key2 = key + '/' + i;
+			if (key2 in this._freshTiles) { delete this._freshTiles[key2]; }
 // 				console.log('Pruned spurious hybrid _freshTiles');
-			}
-		} else {
-			if (key in this._freshTiles) {
-				delete this._freshTiles[key];
-// 				console.log('Pruned spurious _freshTiles', key);
-			}
 		}
 
 		//if the tile is still visible in the google map, keep it.
@@ -421,17 +376,14 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		if (zoom == gZoom && gZoom == this.options.maxNativeZoom) {
 			var imgs = this._tiles[key].el.querySelectorAll('img');
 			if (imgs.length) {
-				if (this._imagesPerTile > 1) {
-					for (var j=0; j<this._imagesPerTile;j++) {
-						var keyJ = key + '/' + j;
-						var imgNode = imgs[j];
-						if (keyJ in this._freshTiles) {
-							this._freshTiles[keyJ].push(imgNode);
-						} else {
-							this._freshTiles[keyJ] = [imgNode];
-						}				}
-				} else {
-					this._freshTiles[key] = [imgs[0]];
+				for (var j=0; j<this._imagesPerTile;j++) {
+					var keyJ = key + '/' + j;
+					var imgNode = imgs[j];
+					if (keyJ in this._freshTiles) {
+						this._freshTiles[keyJ].push(imgNode);
+					} else {
+						this._freshTiles[keyJ] = [imgNode];
+					}				
 				}
 			}
 		}
