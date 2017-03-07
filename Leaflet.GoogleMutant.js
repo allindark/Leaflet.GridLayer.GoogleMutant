@@ -230,7 +230,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		if (coords) {
 			var tileKey = this._tileCoordsToKey(coords);
 			imgNode.style.position = 'absolute';
-			key = tileKey + '/' + sublayer;
+			var key = tileKey + '/' + sublayer;
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
 				this._tileCallbacks[key].shift()(imgNode);
