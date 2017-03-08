@@ -202,7 +202,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		var coords;
 		var match = imgNode.src.match(this._roadRegexp);
 		var sublayer = 0;
-		var parent;
 
 		if (match) {
 			coords = {
@@ -244,7 +243,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					//we already have a tile in this position (mutation is probably a google layer being added)
 					//replace it
 					var c = this._tiles[tileKey].el;
-					oldImg = (sublayer === 0) ? c.firstChild : c.firstChild.nextSibling;
+					var oldImg = (sublayer === 0) ? c.firstChild : c.firstChild.nextSibling;
 					c.replaceChild(cloneImgNode, oldImg);
 				} else if (key in this._freshTiles) {
 					this._freshTiles[key].push(imgNode);
