@@ -1,7 +1,12 @@
 
+# v0.5.1
+
+* Handle `maxNativeZoom` based on the available imagery (by @luiscamacho)
+
+
 # v0.5.0
 
-* Handle `maxNativeZoom` based on the available imagery
+* Handle `maxNativeZoom` based on the available imagery (by @luiscamacho)
 
 # v0.4.5
 
