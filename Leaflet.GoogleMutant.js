@@ -113,7 +113,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		if (!this._mutantContainer) {
 			this._mutantContainer = L.DomUtil.create('div', 'leaflet-google-mutant leaflet-top leaflet-left');
 			this._mutantContainer.id = '_MutantContainer_' + L.Util.stamp(this._mutantContainer);
-			this._mutantContainer.style.zIndex = 'auto';
+			this._mutantContainer.style.zIndex = '800'; //leaflet map pane at 400, controls at 1000
 			this._mutantContainer.style.pointerEvents = 'none';
 
 			this._map.getContainer().appendChild(this._mutantContainer);
