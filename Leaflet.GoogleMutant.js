@@ -237,21 +237,21 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 // console.log('Caching for later', key);
-				parent = imgNode.parentNode;
-				parent.removeChild(imgNode);
-				parent.removeChild = L.Util.falseFn;
-				if (key in this._freshTiles) {
+				var cloneImgNode = imgNode.cloneNode(true);
+				imgNode.style.visibility = 'hidden';
+
+				if (this._tiles[tileKey]) {
+					//we already have a tile in this position (mutation is probably a google layer being added)
+					//replace it
+					var c = this._tiles[tileKey].el;
+					oldImg = (sublayer === 0) ? c.firstChild : c.firstChild.nextSibling;
+					c.replaceChild(cloneImgNode, oldImg);
+				} else if (key in this._freshTiles) {
 					this._freshTiles[key].push(imgNode);
 				} else {
 					this._freshTiles[key] = [imgNode];
 				}
 			}
-		} else if (imgNode.src.match(this._staticRegExp)) {
-			parent = imgNode.parentNode;
-			// Remove the image, but don't store it anywhere.
-			// Image needs to be replaced instead of removed, as the container
-			// seems to be reused.
-			imgNode.parentNode.replaceChild(L.DomUtil.create('img'), imgNode);
 		}
 	},
 
@@ -274,11 +274,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				this._tileCallbacks[key2] = this._tileCallbacks[key2] || [];
 				this._tileCallbacks[key2].push( (function (c/*, k2*/) {
 					return function (imgNode) {
-						var parent = imgNode.parentNode;
-						parent.removeChild(imgNode);
-						parent.removeChild = L.Util.falseFn;
+						var cloneImgNode = imgNode.cloneNode(true);
+						imgNode.style.visibility = 'hidden';
 
-						c.appendChild(imgNode);
+						c.appendChild(cloneImgNode);
 						c.dataset.pending--;
 						if (!parseInt(c.dataset.pending)) { done(); }
 // 						console.log('Sent ', k2, ' to _tileCallbacks, still ', c.dataset.pending, ' images to go');
