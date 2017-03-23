@@ -251,6 +251,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					this._freshTiles[key] = [imgNode];
 				}
 			}
+		} else if (imgNode.src.match(this._staticRegExp)) {
+			imgNode.style.visibility = 'hidden';
 		}
 	},
 
