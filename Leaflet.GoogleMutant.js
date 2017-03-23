@@ -386,6 +386,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	},
 
 	_handleZoomAnim: function () {
+		if (!this._mutant) return;
 		var center = this._map.getCenter();
 		var _center = new google.maps.LatLng(center.lat, center.lng);
 
