@@ -147,11 +147,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._mutant = map;
 
 		google.maps.event.addListenerOnce(map, 'idle', function () {
-			this._mutantContainer.querySelectorAll('a').forEach(
-				function (node) {
-					node.style.pointerEvents = 'auto';
-				}
-			);
+			var nodes = this._mutantContainer.querySelectorAll('a');
+			for(var i = 0; i< nodes.length;i++) {
+				nodes[i].style.pointerEvents = 'auto';
+			}
 		}.bind(this));
 
 		// 🍂event spawned
