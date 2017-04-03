@@ -398,6 +398,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	// GMaps, so that GMaps makes two requests but Leaflet only consumes one,
 	// polluting _freshTiles with stale data.
 	_removeTile: function (key) {
+		if (!this._mutant) return;
+
 		if (this._imagesPerTile > 1) {
 			for (var i=0; i<this._imagesPerTile; i++) {
 				var key2 = key + '/' + i;
