@@ -229,16 +229,17 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		if (coords) {
 			var tileKey = this._tileCoordsToKey(coords);
 			imgNode.style.position = 'absolute';
+			var cloneImgNode = imgNode.cloneNode(true);
+			cloneImgNode.style.visibility = 'visible';
+			imgNode.style.visibility = 'hidden';
+
 			var key = tileKey + '/' + sublayer;
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
-				this._tileCallbacks[key].shift()(imgNode);
+				this._tileCallbacks[key].shift()(cloneImgNode);
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 // console.log('Caching for later', key);
-				var cloneImgNode = imgNode.cloneNode(true);
-				cloneImgNode.style.visibility = 'visible';
-				imgNode.style.visibility = 'hidden';
 
 				if (this._tiles[tileKey]) {
 					//we already have a tile in this position (mutation is probably a google layer being added)
@@ -275,11 +276,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			} else {
 				this._tileCallbacks[key2] = this._tileCallbacks[key2] || [];
 				this._tileCallbacks[key2].push( (function (c/*, k2*/) {
-					return function (imgNode) {
-						var cloneImgNode = imgNode.cloneNode(true);
-						cloneImgNode.style.visibility = 'visible';
-						imgNode.style.visibility = 'hidden';
-
+					return function (cloneImgNode) {
 						c.appendChild(cloneImgNode);
 						c.dataset.pending--;
 						if (!parseInt(c.dataset.pending)) { done(); }
