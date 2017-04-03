@@ -246,9 +246,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					var oldImg = (sublayer === 0) ? c.firstChild : c.firstChild.nextSibling;
 					c.replaceChild(cloneImgNode, oldImg);
 				} else if (key in this._freshTiles) {
-					this._freshTiles[key].push(imgNode);
+					this._freshTiles[key].push(cloneImgNode);
 				} else {
-					this._freshTiles[key] = [imgNode];
+					this._freshTiles[key] = [cloneImgNode];
 				}
 			}
 		} else if (imgNode.src.match(this._staticRegExp)) {
