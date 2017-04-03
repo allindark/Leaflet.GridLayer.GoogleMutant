@@ -365,8 +365,12 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 			this._mutant.setCenter(_center);
 			var zoom = this._map.getZoom();
-			if (zoom !== undefined) {
-				this._mutant.setZoom(Math.round(this._map.getZoom()));
+			var fractionalLevel = zoom !== Math.round(zoom);
+			var mutantZoom = this._mutant.getZoom();
+
+			//ignore fractional zoom levels (to not call setZoom unnecessarily since it has a performance impact)
+			if (!fractionalLevel && (zoom != mutantZoom)) {
+				this._mutant.setZoom(zoom);
 				this._checkZoomLevels();			
 			}
 		}
