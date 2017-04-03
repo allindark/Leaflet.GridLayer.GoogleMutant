@@ -371,7 +371,12 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			//ignore fractional zoom levels (to not call setZoom unnecessarily since it has a performance impact)
 			if (!fractionalLevel && (zoom != mutantZoom)) {
 				this._mutant.setZoom(zoom);
-				this._checkZoomLevels();			
+				
+				var firstRender = (mutantZoom === 0);
+				//zoom level check on first render will be done later by 'idle' handler
+				//(on first render, the google map doesn't immediately revert to the maximum level available - 
+				//  checking it would calculate an incorrect maxNativeZoom)
+				if (!firstRender) this._checkZoomLevels();			
 			}
 		}
 
