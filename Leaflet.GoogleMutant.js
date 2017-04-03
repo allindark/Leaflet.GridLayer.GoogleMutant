@@ -237,6 +237,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			} else {
 // console.log('Caching for later', key);
 				var cloneImgNode = imgNode.cloneNode(true);
+				cloneImgNode.style.visibility = 'visible';
 				imgNode.style.visibility = 'hidden';
 
 				if (this._tiles[tileKey]) {
@@ -276,6 +277,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 				this._tileCallbacks[key2].push( (function (c/*, k2*/) {
 					return function (imgNode) {
 						var cloneImgNode = imgNode.cloneNode(true);
+						cloneImgNode.style.visibility = 'visible';
 						imgNode.style.visibility = 'hidden';
 
 						c.appendChild(cloneImgNode);
