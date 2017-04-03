@@ -76,12 +76,29 @@
 			type:'roadmap'
 		});
 
+		var trafficMutant = L.gridLayer.googleMutant({
+			maxZoom: 24,
+			type:'roadmap'
+		});
+		trafficMutant.addGoogleLayer('TrafficLayer');
+
+
+		var transitMutant = L.gridLayer.googleMutant({
+			maxZoom: 24,
+			type:'roadmap'
+		});
+		transitMutant.addGoogleLayer('TransitLayer');
+
+
+
 		L.control.layers({
 			Roadmap: roadMutant,
 			Aerial: satMutant,
 			Terrain: terrainMutant,
 			Hybrid: hybridMutant,
-			Styles: styleMutant
+			Styles: styleMutant,
+			Traffic: trafficMutant,
+			Transit: transitMutant
 		}, {}, {
 			collapsed: false
 		}).addTo(map);

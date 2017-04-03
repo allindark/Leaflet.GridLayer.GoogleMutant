@@ -75,6 +75,13 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 			this._reset();
 			this._update();
+
+			if (this._subLayers) {
+				//restore previously added google layers
+				for (var layerName in this._subLayers) {
+					this._subLayers[layerName].setMap(this._mutant);
+				}
+			}
 		}.bind(this));
 	},
 
@@ -107,6 +114,27 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		e.style.width = size.x + 'px';
 		e.style.height = size.y + 'px';
 	},
+
+
+	addGoogleLayer: function (googleLayerName, options) {
+		if (!this._subLayers) this._subLayers = {};
+		return this._GAPIPromise.then(function () {
+			var Constructor = google.maps[googleLayerName];
+			var googleLayer = new Constructor(options);
+			googleLayer.setMap(this._mutant);
+			this._subLayers[googleLayerName] = googleLayer;
+			return googleLayer;
+		}.bind(this));
+	},
+
+	removeGoogleLayer: function (googleLayerName) {
+		var googleLayer = this._subLayers && this._subLayers[googleLayerName];
+		if (!googleLayer) return;
+
+		googleLayer.setMap(null);
+		delete this._subLayers[googleLayerName];
+	},
+
 
 	_initMutantContainer: function () {
 		if (!this._mutantContainer) {
