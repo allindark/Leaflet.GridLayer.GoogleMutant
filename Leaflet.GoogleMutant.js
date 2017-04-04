@@ -140,7 +140,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		if (!this._mutantContainer) {
 			this._mutantContainer = L.DomUtil.create('div', 'leaflet-google-mutant leaflet-top leaflet-left');
 			this._mutantContainer.id = '_MutantContainer_' + L.Util.stamp(this._mutantContainer);
-			this._mutantContainer.style.zIndex = 'auto';
+			this._mutantContainer.style.zIndex = '800'; //leaflet map pane at 400, controls at 1000
 			this._mutantContainer.style.pointerEvents = 'none';
 
 			this._map.getContainer().appendChild(this._mutantContainer);
@@ -174,11 +174,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._mutant = map;
 
 		google.maps.event.addListenerOnce(map, 'idle', function () {
-			this._mutantContainer.querySelectorAll('a').forEach(
-				function (node) {
-					node.style.pointerEvents = 'auto';
-				}
-			);
+			var nodes = this._mutantContainer.querySelectorAll('a');
+			for (var i = 0; i < nodes.length; i++) {
+				nodes[i].style.pointerEvents = 'auto';
+			}
 		}.bind(this));
 
 		// 🍂event spawned
@@ -375,6 +374,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	},
 
 	_handleZoomAnim: function () {
+		if (!this._mutant) return;
 		var center = this._map.getCenter();
 		var _center = new google.maps.LatLng(center.lat, center.lng);
 
@@ -387,6 +387,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	// GMaps, so that GMaps makes two requests but Leaflet only consumes one,
 	// polluting _freshTiles with stale data.
 	_removeTile: function (key) {
+		if (!this._mutant) return;
+
 		for (var i=0; i<this._imagesPerTile; i++) {
 			var key2 = key + '/' + i;
 			if (key2 in this._freshTiles) { delete this._freshTiles[key2]; }

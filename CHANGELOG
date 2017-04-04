@@ -1,4 +1,13 @@
 
+# v0.5.1
+
+* Handle `maxNativeZoom` based on the available imagery (by @luiscamacho)
+
+
+# v0.5.0
+
+* Handle `maxNativeZoom` based on the available imagery (by @luiscamacho)
+
 # v0.4.5
 
 * Shift controls in the lower left corner (in addition to those in the lower right) (by @luiscamacho).
