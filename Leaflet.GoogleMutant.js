@@ -67,7 +67,10 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			map.on('resize', this._resize, this);
 
 			//handle layer being added to a map for which there are no Google tiles at the given zoom
-			google.maps.event.addListenerOnce(this._mutant, 'idle', this._checkZoomLevels.bind(this, true));
+			google.maps.event.addListenerOnce(this._mutant, 'idle', function () {
+				this._checkZoomLevels();
+				this._mutantIsReady = true;
+			}.bind(this));
 
 			//20px instead of 1em to avoid a slight overlap with google's attribution
 			map._controlCorners.bottomright.style.marginBottom = '20px';
@@ -357,15 +360,12 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			var fractionalLevel = zoom !== Math.round(zoom);
 			var mutantZoom = this._mutant.getZoom();
 
-			//ignore fractional zoom levels (to not call setZoom unnecessarily since it has a performance impact)
+			//ignore fractional zoom levels
 			if (!fractionalLevel && (zoom != mutantZoom)) {
 				this._mutant.setZoom(zoom);
-				
-				var firstRender = (mutantZoom === 0);
-				//zoom level check on first render will be done later by 'idle' handler
-				//(on first render, the google map doesn't immediately revert to the maximum level available - 
-				//  checking it would calculate an incorrect maxNativeZoom)
-				if (!firstRender) this._checkZoomLevels();			
+							
+				if (this._mutantIsReady) this._checkZoomLevels();
+				//else zoom level check will be done later by 'idle' handler
 			}
 		}
 
