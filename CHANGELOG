@@ -1,8 +1,14 @@
 
+# v0.6.0
+
+* Add support for displaying some types of the traffic and "pegman" layers (by @luiscamacho)
+* Add more sanity checks, prevent errors when the GMaps code takes time to load (by @tedbreen and @zakjan)
+* Fixed a `forEach` iterator causing trouble in IE11 (by @dnasir)
+* Fixed some race conditions by copying the tiles instead of moving them (by @luiscamacho)
+
 # v0.5.1
 
 * Handle `maxNativeZoom` based on the available imagery (by @luiscamacho)
-
 
 # v0.5.0
 
