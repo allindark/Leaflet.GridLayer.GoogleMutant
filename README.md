@@ -63,9 +63,9 @@ You can also download a static copy from the CDN, or clone this git repo.
 
 ## Known caveats
 
-`hybrid` mode prunes tiles before needed for no apparent reason, so the map flickers when there is a zoom change.
+* `hybrid` mode prunes tiles before needed for no apparent reason, so the map flickers when there is a zoom change.
 
-If you are targeting IE11, then include the following **before** the `script` element that references
+* If you are targeting IE11, then include the following **before** the `script` element that references
 the GoogleMutant javascript file:
 
 ```
@@ -74,6 +74,8 @@ the GoogleMutant javascript file:
 ```
 
 This will polyfill in Javascript Promises for IE.
+
+* GoogleMutant is meant to provide a reliable (and ToC-compliant) way of loading Google Map's tiles into Leaflet, nothing more.
 
 ## Motivation
 
