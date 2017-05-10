@@ -268,7 +268,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 			if (key in this._tileCallbacks && this._tileCallbacks[key]) {
 // console.log('Fullfilling callback ', key);
-				this._tileCallbacks[key].shift()(cloneImgNode);
+				//fullfill most recent tileCallback because there maybe callbacks that will never get a 
+				//corresponding mutation (because map moved to quickly...)
+				this._tileCallbacks[key].pop()(imgNode); 
 				if (!this._tileCallbacks[key].length) { delete this._tileCallbacks[key]; }
 			} else {
 				if (this._tiles[tileKey]) {
