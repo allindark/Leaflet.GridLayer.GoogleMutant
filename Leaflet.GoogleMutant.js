@@ -321,7 +321,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		return tileContainer;
 	},
 
-	_clone: function(imgNode) {
+	_clone: function (imgNode) {
 		var clonedImgNode = imgNode.cloneNode(true);
 		clonedImgNode.style.visibility = 'visible';
 		return clonedImgNode;
