@@ -1,4 +1,8 @@
 
+# v0.6.1
+
+* Fix missing tiles by keeping tiles more agressively (by @luiscamacho)
+
 # v0.6.0
 
 * Add support for displaying some types of the traffic and "pegman" layers (by @luiscamacho)
