@@ -19,5 +19,8 @@
   "license": "Beerware",
   "devDependencies": {
     "eslint": "^3.8.1"
+  },
+  "peerDependencies": {
+    "leaflet": "^1.0.0"
   }
 }
