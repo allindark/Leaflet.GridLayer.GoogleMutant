@@ -1,4 +1,8 @@
 
+# v0.6.2
+
+* Specify Leaflet as a peerDependency in package.json
+
 # v0.6.1
 
 * Fix missing tiles by keeping tiles more agressively (by @luiscamacho)
