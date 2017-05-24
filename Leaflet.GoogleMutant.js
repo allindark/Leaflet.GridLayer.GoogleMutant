@@ -61,8 +61,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 			this._initMutant();
 
-			google.maps.event.clearListeners(map, 'idle');
-			google.maps.event.clearListeners(this._mutant, 'idle');
 			map.on('viewreset', this._reset, this);
 			map.on('move', this._update, this);
 			map.on('zoomend', this._handleZoomAnim, this);
