@@ -5,8 +5,6 @@
 // 🍂class GridLayer.GoogleMutant
 // 🍂extends GridLayer
 L.GridLayer.GoogleMutant = L.GridLayer.extend({
-	includes: L.Mixin.Events,
-
 	options: {
 		minZoom: 0,
 		maxZoom: 18,
