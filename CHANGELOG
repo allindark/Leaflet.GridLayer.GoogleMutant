@@ -1,4 +1,10 @@
 
+# v0.6.3
+
+* Clear listeners for `idle` events in the mutant
+* Remove legacy `L.Events.Mixin`
+* Change default `maxZoom` option
+
 # v0.6.2
 
 * Specify Leaflet as a peerDependency in package.json

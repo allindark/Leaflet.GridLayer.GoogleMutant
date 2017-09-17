@@ -1,6 +1,6 @@
 {
   "name": "leaflet.gridlayer.googlemutant",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A plugin for LeafletJS to use Google maps basemaps.",
   "main": "Leaflet.GoogleMutant.js",
   "repository": {
