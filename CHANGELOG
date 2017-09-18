@@ -1,9 +1,13 @@
 
+# v0.6.4 (2017-09-18)
+
+* Fix a reference error when destroying the map under some frameworks (by @mkochendorfer)
+
 # v0.6.3
 
-* Clear listeners for `idle` events in the mutant
-* Remove legacy `L.Events.Mixin`
-* Change default `maxZoom` option
+* Clear listeners for `idle` events in the mutant (by @ryan-morris)
+* Remove legacy `L.Events.Mixin` (by @luiscamacho)
+* Change default `maxZoom` option (by @luiscamacho)
 
 # v0.6.2
 
