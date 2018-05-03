@@ -18,7 +18,7 @@ A [LeafletJS](http://www.leafletjs.com) plugin to use Google maps basemaps.
 
 Include the GMaps JS API in your HTML, plus Leaflet:
 
-```
+```html
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
@@ -26,13 +26,13 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 
 Include the GoogleMutant javascript file:
 
-```
+```html
 <script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
 ```
 
 Then, you can create an instance of `L.GridLayer.GoogleMutant` on your JS code:
 
-```
+```javascript
 var roads = L.gridLayer.googleMutant({
 	type: 'roadmap'	// valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
 }).addTo(map);
@@ -41,7 +41,7 @@ var roads = L.gridLayer.googleMutant({
 It's also possible to use [custom styling](https://developers.google.com/maps/documentation/javascript/styling)
 by passing a value to the `styles` option, e.g.:
 
-```
+```javascript
 var styled = L.gridLayer.googleMutant({
 	type: 'roadmap',
 	styles: [
@@ -68,7 +68,7 @@ You can also download a static copy from the CDN, or clone this git repo.
 * If you are targeting IE11, then include the following **before** the `script` element that references
 the GoogleMutant javascript file:
 
-```
+```html
 <script src="https://unpkg.com/es6-promise@4.0.5/dist/es6-promise.min.js"></script>
 <script>ES6Promise.polyfill();</script>
 ```
