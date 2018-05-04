@@ -1,16 +1,16 @@
 # Leaflet.GridLayer.GoogleMutant
 
-A [LeafletJS](http://www.leafletjs.com) plugin to use Google maps basemaps.
+A [LeafletJS](http://leafletjs.com/) plugin to use Google maps basemaps.
 
 ## Demo
 
-[http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html](http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html)
+[https://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html](https://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html)
 
 ## Compatibility
 
-* This plugin doesn't work on IE10 or lower, as [that browser doesn't implement DOM mutation observers](http://caniuse.com/#search=mutation). Chrome, Firefox, Safari, IE11 and Edge are fine.
+* This plugin doesn't work on IE10 or lower, as [that browser doesn't implement DOM mutation observers](https://caniuse.com/#feat=mutationobserver). Chrome, Firefox, Safari, IE11 and Edge are fine.
 
-* IE11 and [browsers that don't support `Promise`s](http://caniuse.com/#search=promise) need a polyfill in order to work. See the "Known caveats" section.
+* IE11 and [browsers that don't support `Promise`s](https://caniuse.com/#feat=promises) need a polyfill in order to work. See the "Known caveats" section.
 
 * The `maxNativeZoom` functionality introduced in v0.5.0 (thanks, @luiscamacho!) requires Leaflet >1.0.3. At the time of this writing, this means "using the `master` branch of Leaflet".
 
