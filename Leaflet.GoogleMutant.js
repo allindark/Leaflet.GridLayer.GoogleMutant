@@ -224,7 +224,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 					Array.prototype.forEach.call(
 						node.querySelectorAll('div[draggable=false][style*="text-align: center"]'),
 						L.DomUtil.remove
-					)
+					);
 				}
 			}
 		}
