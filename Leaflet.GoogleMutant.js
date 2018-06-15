@@ -209,6 +209,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 				if (node instanceof HTMLImageElement) {
 					this._onMutatedImage(node);
+				} else if (node instanceof HTMLDivElement) {
+					// See https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant/issues/42
+					node.style.pointerEvents = 'auto';
 				} else if (node instanceof HTMLElement) {
 					Array.prototype.forEach.call(
 						node.querySelectorAll('img'),
