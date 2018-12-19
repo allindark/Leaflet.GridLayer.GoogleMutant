@@ -110,13 +110,6 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		return this.options.attribution;
 	},
 
-	setOpacity: function (opacity) {
-		this.options.opacity = opacity;
-		if (opacity < 1) {
-			L.DomUtil.setOpacity(this._mutantContainer, opacity);
-		}
-	},
-
 	setElementSize: function (e, size) {
 		e.style.width = size.x + 'px';
 		e.style.height = size.y + 'px';
