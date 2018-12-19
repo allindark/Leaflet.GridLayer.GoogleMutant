@@ -62,7 +62,11 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			this._initMutant();
 
 			map.on('viewreset', this._reset, this);
-			map.on('move', this._update, this);
+			if (this.options.updateWhenIdle) {
+				map.on('moveend', this._update, this);
+			} else {
+				map.on('move', this._update, this);
+			}
 			map.on('zoomend', this._handleZoomAnim, this);
 			map.on('resize', this._resize, this);
 
@@ -97,6 +101,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		google.maps.event.clearListeners(this._mutant, 'idle');
 		map.off('viewreset', this._reset, this);
 		map.off('move', this._update, this);
+		map.off('moveend', this._update, this);
 		map.off('zoomend', this._handleZoomAnim, this);
 		map.off('resize', this._resize, this);
 
@@ -142,6 +147,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			this._mutantContainer.id = '_MutantContainer_' + L.Util.stamp(this._mutantContainer);
 			this._mutantContainer.style.zIndex = '800'; //leaflet map pane at 400, controls at 1000
 			this._mutantContainer.style.pointerEvents = 'none';
+			
+			L.DomEvent.off(this._mutantContainer);
 
 			this._map.getContainer().appendChild(this._mutantContainer);
 		}
@@ -207,10 +214,15 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 						node.querySelectorAll('img'),
 						this._boundOnMutatedImage
 					);
-                    
+
 					// Check for, and remove, the "Google Maps can't load correctly" div.
 					// You *are* loading correctly, you dumbwit.
 					if (node.style.backgroundColor === 'white') {
+						L.DomUtil.remove(node);
+					}
+                    
+					// Check for, and remove, the "For development purposes only" divs on the aerial/hybrid tiles.
+					if (node.textContent.indexOf('For development purposes only') === 0) {
 						L.DomUtil.remove(node);
 					}
                     
