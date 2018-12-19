@@ -12,7 +12,7 @@ A [LeafletJS](http://leafletjs.com/) plugin to use Google maps basemaps.
 
 * IE11 and [browsers that don't support `Promise`s](https://caniuse.com/#feat=promises) need a polyfill in order to work. See the "Known caveats" section.
 
-* The `maxNativeZoom` functionality introduced in v0.5.0 (thanks, @luiscamacho!) requires Leaflet >1.0.3. At the time of this writing, this means "using the `master` branch of Leaflet".
+* The `maxNativeZoom` functionality introduced in v0.5.0 (thanks, @luiscamacho!) requires Leaflet >1.0.3.
 
 ## Usage
 
@@ -20,8 +20,12 @@ Include the GMaps JS API in your HTML, plus Leaflet:
 
 ```html
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY" async defer></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+  integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
 ```
 
 Include the GoogleMutant javascript file:

@@ -11,11 +11,11 @@
 <!--  <link rel="stylesheet" href="../Leaflet/dist/leaflet.css" />
 	<script type="text/javascript" src="../Leaflet/dist/leaflet-src.js"></script>-->
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
   crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-  integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+  integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
   crossorigin=""></script>
 
 	<script type="text/javascript" src="Leaflet.GoogleMutant.js"></script>
@@ -129,20 +129,20 @@
 //    map.addLayer(kittens);
 //    map.addLayer(debug);
 
-		var grid = L.gridLayer({
-			attribution: 'Grid Layer',
-//      tileSize: L.point(150, 80),
-//      tileSize: tileSize
-		});
-
-		grid.createTile = function (coords) {
-			var tile = L.DomUtil.create('div', 'tile-coords');
-			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-
-			return tile;
-		};
-
-		map.addLayer(grid);
+// 		var grid = L.gridLayer({
+// 			attribution: 'Grid Layer',
+// //      tileSize: L.point(150, 80),
+// //      tileSize: tileSize
+// 		});
+// 
+// 		grid.createTile = function (coords) {
+// 			var tile = L.DomUtil.create('div', 'tile-coords');
+// 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+// 
+// 			return tile;
+// 		};
+// 
+// 		map.addLayer(grid);
 
 	</script>
 </body>

@@ -214,7 +214,13 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 						node.querySelectorAll('img'),
 						this._boundOnMutatedImage
 					);
-
+                    
+					// Check for, and remove, the "Google Maps can't load correctly" div.
+					// You *are* loading correctly, you dumbwit.
+					if (node.style.backgroundColor === 'white') {
+						L.DomUtil.remove(node);
+					}
+                    
 					// Check for, and remove, the "Sorry, we have no imagery here"
 					// empty <div>s. The [style*="text-align: center"] selector
 					// avoids matching the attribution notice.
