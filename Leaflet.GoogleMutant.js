@@ -94,8 +94,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 	onRemove: function (map) {
 		L.GridLayer.prototype.onRemove.call(this, map);
+		this._observer.disconnect();
 		map._container.removeChild(this._mutantContainer);
-		this._mutantContainer = undefined;
 
 		google.maps.event.clearListeners(map, 'idle');
 		google.maps.event.clearListeners(this._mutant, 'idle');
@@ -150,8 +150,8 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 			
 			L.DomEvent.off(this._mutantContainer);
 
-			this._map.getContainer().appendChild(this._mutantContainer);
 		}
+		this._map.getContainer().appendChild(this._mutantContainer);
 
 		this.setOpacity(this.options.opacity);
 		this.setElementSize(this._mutantContainer, this._map.getSize());
@@ -161,6 +161,13 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 
 	_initMutant: function () {
 		if (!this._ready || !this._mutantContainer) return;
+
+		if (this._mutant) {
+			// reuse old _mutant, just make sure it has the correct size
+			this._resize();
+			return;
+		}
+
 		this._mutantCenter = new google.maps.LatLng(0, 0);
 
 		var map = new google.maps.Map(this._mutantContainer, {
@@ -195,10 +202,18 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 	_attachObserver: function _attachObserver (node) {
 // 		console.log('Gonna observe', node);
 
-		var observer = new MutationObserver(this._onMutations.bind(this));
+		if (!this._observer)
+			this._observer = new MutationObserver(this._onMutations.bind(this));
 
 		// pass in the target node, as well as the observer options
-		observer.observe(node, { childList: true, subtree: true });
+		this._observer.observe(node, { childList: true, subtree: true });
+
+		// if we are reusing an old _mutantContainer, we must manually detect
+		// all existing tiles in it
+		Array.prototype.forEach.call(
+			node.querySelectorAll('img'),
+			this._boundOnMutatedImage
+		);
 	},
 
 	_onMutations: function _onMutations (mutations) {
