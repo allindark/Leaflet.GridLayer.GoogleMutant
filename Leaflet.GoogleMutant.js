@@ -440,9 +440,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		this._mutant.setZoom(Math.round(this._map.getZoom()));
 		const gZoom = this._mutant.getZoom();
 
-		for(key of Object.keys(this._freshTiles)) {
+		for (let key of Object.keys(this._freshTiles)) {
 			const tileZoom = key.split(':')[2];
-			if(gZoom != tileZoom) {
+			if (gZoom != tileZoom) {
 				delete this._freshTiles[key]; 
 			}
 		}
@@ -469,9 +469,9 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
 		const swLng = sw.lng();
 		const neLat = ne.lat();
 		const neLng = ne.lng();
-		const latDelta = Math.abs(neLat - swLat)
-		const lngDelta = Math.abs(neLng - swLng)
-		return L.latLngBounds([[swLat - latDelta, swLng - lngDelta], [neLat + latDelta, neLng + lngDelta]])
+		const latDelta = Math.abs(neLat - swLat);
+		const lngDelta = Math.abs(neLng - swLng);
+		return L.latLngBounds([[swLat - latDelta, swLng - lngDelta], [neLat + latDelta, neLng + lngDelta]]);
 	},
 
 	_pruneTile: function (key) {
